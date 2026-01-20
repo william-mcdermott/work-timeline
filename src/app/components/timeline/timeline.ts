@@ -1,14 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Header } from './header/header';
 import { TimelineGrid } from './timeline-grid/timeline-grid';
-import { WorkCenterDocument, ZoomLevel } from '../../models/work-order.model';
+import { WorkCenterDocument, WorkOrderDocument, ZoomLevel } from '../../models/work-order.model';
 import { TimelineScrollArea } from './timeline-scroll-area/timeline-scroll-area';
+import { FormGroup } from '@angular/forms';
 
 export interface DateColumn {
   label: string;
   date: string;
 }
-
 
 @Component({
   selector: 'app-timeline',
@@ -16,10 +16,23 @@ export interface DateColumn {
   templateUrl: './timeline.html',
   styleUrl: './timeline.scss',
 })
-export class Timeline {
+export class Timeline implements OnInit {
   zoomLevel: ZoomLevel = 'month';
   dateColumns: DateColumn[] = [];
   columnWidth = 80;
+  selectedWorkCenter = '';
+  workOrderForm!: FormGroup;
+  panelMode: 'create' | 'edit' = 'create';
+  isPanelOpen = false;
+  editingOrder: WorkOrderDocument | null = null;
+  openMenuId: string | null = null;
+  formError = '';
+
+  constructor() {}
+
+  ngOnInit() {
+    this.generateDateColumns();
+  }
 
   generateDateColumns(): void {
     const start = new Date(2025, 0, 1);
@@ -56,5 +69,19 @@ export class Timeline {
 
   onZoomChange(): void {
     this.generateDateColumns();
+  }
+
+  prepForm(workCenterId: string, clickedDate: Date, endDate: Date) {
+    this.selectedWorkCenter = workCenterId;
+    this.workOrderForm.patchValue({
+      name: '',
+      status: 'open',
+      startDate: clickedDate,
+      endDate: endDate.toISOString().split('T')[0],
+    });
+    this.formError = '';
+    this.panelMode = 'create';
+    this.editingOrder = null;
+    this.isPanelOpen = true;
   }
 }

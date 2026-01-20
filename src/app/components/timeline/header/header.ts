@@ -11,6 +11,6 @@ import { FormsModule } from '@angular/forms';
 export class Header {
   constructor() {}
   @Input() zoomLevel: ZoomLevel = 'month';
-  @Input() onZoomChange!: Function
+  @Input() generateDateColumns!: Function
 
 }
