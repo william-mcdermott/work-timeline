@@ -1,0 +1,7 @@
+<div class="grid-lines">
+  <div
+    *ngFor="let col of dateColumns; trackBy: trackByColumn"
+    class="grid-line"
+    [style.width.px]="columnWidth"
+  ></div>
+</div>

@@ -1,0 +1,30 @@
+.timeline-scroll {
+  flex: 1;
+  overflow-x: auto;
+  overflow-y: hidden;
+  background: #fafafa;
+}
+
+.timeline-content {
+  min-width: 100%;
+}
+
+.date-headers {
+  height: 48px;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+  background: white;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+
+  .date-header {
+    border-right: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 500;
+    color: #6b7280;
+  }
+}
