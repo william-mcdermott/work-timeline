@@ -1,7 +1,7 @@
 .timeline-grid {
-  flex: 1;
   display: flex;
-  overflow: hidden;
+  flex-direction: column;
+  flex-shrink: 0;
 }
 
 .work-centers-column {

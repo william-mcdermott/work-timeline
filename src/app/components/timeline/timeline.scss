@@ -5,3 +5,9 @@
   flex-direction: column;
   background: #f8f9fa;
 }
+
+.timeline-body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
