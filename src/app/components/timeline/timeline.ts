@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Header } from './header/header';
 import { TimelineGrid } from './timeline-grid/timeline-grid';
 import { WorkCenterDocument, WorkOrderDocument, ZoomLevel } from '../../models/work-order.model';
 import { TimelineScrollArea } from './timeline-scroll-area/timeline-scroll-area';
 import { FormGroup } from '@angular/forms';
+import { WorkOrderService } from '../../services/work-order.service';
 
 export interface DateColumn {
   label: string;
@@ -17,6 +18,8 @@ export interface DateColumn {
   styleUrl: './timeline.scss',
 })
 export class Timeline implements OnInit {
+  private workOrderService = inject(WorkOrderService);
+
   zoomLevel: ZoomLevel = 'month';
   dateColumns: DateColumn[] = [];
   columnWidth = 80;
@@ -27,8 +30,6 @@ export class Timeline implements OnInit {
   editingOrder: WorkOrderDocument | null = null;
   openMenuId: string | null = null;
   formError = '';
-
-  constructor() {}
 
   ngOnInit() {
     this.generateDateColumns();
@@ -116,6 +117,19 @@ export class Timeline implements OnInit {
     this.formError = '';
     this.panelMode = 'edit';
     this.isPanelOpen = true;
+    this.openMenuId = null;
+  }
+
+  handleCreateFormRequest(event: { workCenterId: string; clickedDate: Date; endDate: Date }): void {
+    this.prepForm(event.workCenterId, event.clickedDate, event.endDate);
+  }
+
+  handleEdit(workOrder: WorkOrderDocument): void {
+    this.onEdit(workOrder);
+  }
+
+  handleDelete(orderId: string): void {
+    this.workOrderService.deleteWorkOrder(orderId);
     this.openMenuId = null;
   }
 }

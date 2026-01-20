@@ -9,11 +9,11 @@
   >
     <app-work-orders
       [workCenter]="wc"
-      [getPositionForDate]="getPositionForDate"
-      [zoomLevel]="zoomLevel"
-      [columnWidth]="columnWidth"
-      [openMenuId]="openMenuId"
-      [onEdit]="onEdit"
+      [getPositionForDate]="getPositionForDate()"
+      [zoomLevel]="zoomLevel()"
+      [columnWidth]="columnWidth()"
+      (editRequested)="handleEdit($event)"
+      (deleteRequested)="handleDelete($event)"
     ></app-work-orders>
   </div>
 }

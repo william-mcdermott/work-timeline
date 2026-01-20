@@ -1,8 +1,8 @@
-@for (wo of getWorkOrdersForCenter(workCenter.docId); track wo.docId) {
+@for (wo of workOrders(); track wo.docId) {
   <div
     tabindex="0"
     class="work-order-bar"
-    [style.left.px]="getPositionForDate(wo.data.startDate)"
+    [style.left.px]="getPositionForDate()(wo.data.startDate)"
     [style.width.px]="getWidthForDateRange(wo.data.startDate, wo.data.endDate)"
     [style.background-color]="statusConfig[wo.data.status].color"
     (click)="$event.stopPropagation()"
@@ -26,9 +26,9 @@
           <circle cx="12" cy="19" r="1"></circle>
         </svg>
       </button>
-      @if (openMenuId === wo.docId) {
+      @if (openMenuId() === wo.docId) {
         <div class="dropdown-menu">
-        <button class="menu-item" (click)="onEdit(wo)">
+        <button class="menu-item" (click)="handleEdit(wo)">
           <svg
             width="16"
             height="16"
@@ -42,7 +42,7 @@
           </svg>
           Edit
         </button>
-        <button class="menu-item delete" (click)="onDelete(wo.docId)">
+        <button class="menu-item delete" (click)="handleDelete(wo.docId)">
           <svg
             width="16"
             height="16"

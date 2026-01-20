@@ -4,10 +4,10 @@
   <app-timeline-scroll-area
     [dateColumns]="dateColumns"
     [columnWidth]="columnWidth"
-    [prepForm]="prepForm"
     [getPositionForDate]="getPositionForDate"
     [zoomLevel]="zoomLevel"
-    [openMenuId]="openMenuId"
-    [onEdit]="onEdit"
+    (createFormRequested)="handleCreateFormRequest($event)"
+    (editRequested)="handleEdit($event)"
+    (deleteRequested)="handleDelete($event)"
   ></app-timeline-scroll-area>
 </div>

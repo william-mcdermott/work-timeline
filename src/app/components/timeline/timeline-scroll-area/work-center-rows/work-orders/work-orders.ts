@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
 import {
   STATUS_CONFIG,
   WorkCenterDocument,
@@ -12,47 +12,61 @@ import { WorkOrderService } from '../../../../../services/work-order.service';
   imports: [CommonModule],
   templateUrl: './work-orders.html',
   styleUrl: './work-orders.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WorkOrders {
   private workOrderService = inject(WorkOrderService);
 
-  workOrders: WorkOrderDocument[] = [];
   statusConfig = STATUS_CONFIG;
 
-  @Input() workCenter!: WorkCenterDocument;
-  @Input() getPositionForDate!: (date: string) => number;
-  @Input() zoomLevel!: string;
-  @Input() columnWidth!: number;
-  @Input() openMenuId!: string | null;
-  @Input() onEdit!: (workOrder: WorkOrderDocument) => void;
+  // Inputs using signal-based API
+  workCenter = input.required<WorkCenterDocument>();
+  getPositionForDate = input.required<(date: string) => number>();
+  zoomLevel = input.required<string>();
+  columnWidth = input.required<number>();
 
-  getWorkOrdersForCenter(workCenterId: string): WorkOrderDocument[] {
-    return this.workOrders.filter((wo) => wo.data.workCenterId === workCenterId);
-  }
+  // Outputs for events
+  readonly editRequested = output<WorkOrderDocument>();
+  readonly deleteRequested = output<string>();
+
+  // Local state
+  openMenuId = signal<string | null>(null);
+
+  // Computed values
+  workOrders = computed(() =>
+    this.workOrderService
+      .getWorkOrders()
+      .filter(wo => wo.data.workCenterId === this.workCenter().docId)
+  );
 
   getWidthForDateRange(startDate: string, endDate: string): number {
     const start = new Date(startDate);
     const end = new Date(endDate);
     const daysDiff = Math.floor((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
 
-    if (this.zoomLevel === 'day') {
-      return daysDiff * this.columnWidth;
-    } else if (this.zoomLevel === 'week') {
-      return Math.ceil(daysDiff / 7) * this.columnWidth;
+    if (this.zoomLevel() === 'day') {
+      return daysDiff * this.columnWidth();
+    } else if (this.zoomLevel() === 'week') {
+      return Math.ceil(daysDiff / 7) * this.columnWidth();
     } else {
       const monthsDiff =
         (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth()) + 1;
-      return monthsDiff * this.columnWidth;
+      return monthsDiff * this.columnWidth();
     }
   }
 
   toggleMenu(orderId: string, event: Event): void {
     event.stopPropagation();
-    this.openMenuId = this.openMenuId === orderId ? null : orderId;
+    this.openMenuId.update(current => current === orderId ? null : orderId);
   }
 
-  onDelete(orderId: string): void {
-    this.workOrderService.deleteWorkOrder(orderId);
-    this.openMenuId = null;
+  handleEdit(workOrder: WorkOrderDocument): void {
+    this.editRequested.emit(workOrder);
+    this.openMenuId.set(null);
+  }
+
+  handleDelete(orderId: string): void {
+    this.deleteRequested.emit(orderId);
+    this.openMenuId.set(null);
   }
 }
