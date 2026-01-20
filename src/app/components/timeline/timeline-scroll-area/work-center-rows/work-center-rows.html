@@ -1,0 +1,5 @@
+<div
+  *ngFor="let wc of workCenters; trackBy: trackByWorkCenter"
+  class="timeline-row"
+  (click)="onTimelineClick(wc.docId, $event)"
+></div>
