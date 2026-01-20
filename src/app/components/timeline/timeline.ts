@@ -84,4 +84,23 @@ export class Timeline implements OnInit {
     this.editingOrder = null;
     this.isPanelOpen = true;
   }
+
+  getPositionForDate(date: string): number {
+    const targetDate = new Date(date);
+    const startDate = new Date(this.dateColumns[0].date);
+    const daysDiff = Math.floor(
+      (targetDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24),
+    );
+
+    if (this.zoomLevel === 'day') {
+      return daysDiff * this.columnWidth;
+    } else if (this.zoomLevel === 'week') {
+      return Math.floor(daysDiff / 7) * this.columnWidth;
+    } else {
+      const monthsDiff =
+        (targetDate.getFullYear() - startDate.getFullYear()) * 12 +
+        (targetDate.getMonth() - startDate.getMonth());
+      return monthsDiff * this.columnWidth;
+    }
+  }
 }
