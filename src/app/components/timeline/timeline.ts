@@ -1,10 +1,11 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Header } from './header/header';
 import { TimelineGrid } from './timeline-grid/timeline-grid';
-import { WorkCenterDocument, WorkOrderDocument, ZoomLevel } from '../../models/work-order.model';
+import { WorkOrderDocument, ZoomLevel } from '../../models/work-order.model';
 import { TimelineScrollArea } from './timeline-scroll-area/timeline-scroll-area';
 import { FormGroup } from '@angular/forms';
 import { WorkOrderService } from '../../services/work-order.service';
+import { SidePanel } from './side-panel/side-panel';
 
 export interface DateColumn {
   label: string;
@@ -13,7 +14,7 @@ export interface DateColumn {
 
 @Component({
   selector: 'app-timeline',
-  imports: [Header, TimelineGrid, TimelineScrollArea],
+  imports: [Header, TimelineGrid, TimelineScrollArea, SidePanel],
   templateUrl: './timeline.html',
   styleUrl: './timeline.scss',
 })
@@ -131,5 +132,10 @@ export class Timeline implements OnInit {
   handleDelete(orderId: string): void {
     this.workOrderService.deleteWorkOrder(orderId);
     this.openMenuId = null;
+  }
+
+  closePanel(): void {
+    this.isPanelOpen = false;
+    this.editingOrder = null;
   }
 }

@@ -1,0 +1,54 @@
+@if (isPanelOpen()) {
+  <div tabindex="0" class="panel-overlay" (click)="closePanel()()" (keyup)="closePanel()()"></div>
+  <div class="side-panel">
+    <div class="panel-header">
+      <h2>Work Order Details</h2>
+      <button class="close-button" (click)="closePanel()()">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+
+    <form [formGroup]="workOrderForm" class="panel-content">
+      <div class="form-group">
+        <label for="workOrderName">Work Order Name *</label>
+        <input id="workOrderName" type="text" formControlName="name" placeholder="Enter work order name">
+      </div>
+
+      <div class="form-group">
+        <label for="workOrderStatus">Status *</label>
+        <select id="workOrderStatus" formControlName="status">
+          @for (opt of statusOptions; track opt.value) {
+            <option [value]="opt.value">{{ opt.label }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="workOrderStartDate">Start Date *</label>
+        <input id="workOrderStartDate" type="date" formControlName="startDate">
+      </div>
+
+      <div class="form-group">
+        <label for="workOrderEndDate">End Date *</label>
+        <input id="workOrderEndDate" type="date" formControlName="endDate">
+      </div>
+
+      @if (formError) {
+        <div class="error-message">
+          {{ formError }}
+        </div>
+      }
+    </form>
+
+    <div class="panel-footer">
+      <button class="btn-secondary" (click)="closePanel()()">Cancel</button>
+      <button class="btn-primary" (click)="onSubmit()">
+        {{ panelMode === 'create' ? 'Create' : 'Save' }}
+      </button>
+    </div>
+  </div>
+}
+

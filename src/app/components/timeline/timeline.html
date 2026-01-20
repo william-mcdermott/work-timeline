@@ -12,4 +12,8 @@
       (deleteRequested)="handleDelete($event)"
     ></app-timeline-scroll-area>
   </div>
+  <app-side-panel
+    [isPanelOpen]="isPanelOpen"
+    [closePanel]="closePanel.bind(this)"
+  ></app-side-panel>
 </div>

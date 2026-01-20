@@ -1,0 +1,133 @@
+.panel-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 100;
+}
+
+.side-panel {
+  position: fixed;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 400px;
+  background: white;
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.1);
+  z-index: 101;
+  display: flex;
+  flex-direction: column;
+
+  .panel-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    h2 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0;
+      color: #111827;
+    }
+
+    .close-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      display: flex;
+      color: #6b7280;
+
+      &:hover {
+        color: #111827;
+      }
+    }
+  }
+
+  .panel-content {
+    flex: 1;
+    padding: 24px;
+    overflow-y: auto;
+
+    .form-group {
+      margin-bottom: 20px;
+
+      label {
+        display: block;
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 6px;
+        color: #374151;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        font-size: 14px;
+        font-family: inherit;
+
+        &:focus {
+          outline: none;
+          border-color: #3b82f6;
+          box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+      }
+
+      select {
+        background: white;
+        cursor: pointer;
+      }
+    }
+
+    .error-message {
+      padding: 12px;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 6px;
+      color: #dc2626;
+      font-size: 14px;
+      margin-top: 20px;
+    }
+  }
+
+  .panel-footer {
+    padding: 20px 24px;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    gap: 12px;
+
+    button {
+      flex: 1;
+      padding: 10px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+
+      &.btn-secondary {
+        border: 1px solid #d1d5db;
+        background: white;
+        color: #374151;
+
+        &:hover {
+          background: #f9fafb;
+        }
+      }
+
+      &.btn-primary {
+        border: none;
+        background: #3b82f6;
+        color: white;
+
+        &:hover {
+          background: #2563eb;
+        }
+      }
+    }
+  }
+}
