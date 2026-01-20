@@ -1,4 +1,5 @@
 <div class="timeline-container">
-  <app-header></app-header>
+  <app-header [zoomLevel]="zoomLevel" [onZoomChange]="onZoomChange"></app-header>
   <app-timeline-grid></app-timeline-grid>
+  <app-timeline-scroll-area [dateColumns]="dateColumns" [columnWidth]="columnWidth"></app-timeline-scroll-area>
 </div>
