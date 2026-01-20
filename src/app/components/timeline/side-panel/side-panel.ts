@@ -1,4 +1,4 @@
-import { Component, effect, inject, input, output } from '@angular/core';
+import { Component, computed, effect, inject, input, output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { WorkOrderStatus } from '../../../models/work-order.model';
@@ -24,6 +24,7 @@ export class SidePanel {
   isPanelOpen = input<boolean>(false);
   panelMode = input<'create' | 'edit'>('create');
   initialData = input<WorkOrderFormData | null>(null);
+  formError = input<string>('');
 
   // Outputs
   closePanel = input.required<() => void>();
@@ -31,7 +32,10 @@ export class SidePanel {
 
   // Form state
   workOrderForm!: FormGroup;
-  formError = '';
+  localFormError = '';
+
+  // Computed combined error message
+  displayError = computed(() => this.formError() || this.localFormError);
 
   statusOptions = [
     { value: 'open', label: 'Open' },
@@ -54,7 +58,7 @@ export class SidePanel {
       const data = this.initialData();
       if (data) {
         this.workOrderForm.patchValue(data);
-        this.formError = '';
+        this.localFormError = '';
       }
     });
   }
@@ -62,9 +66,9 @@ export class SidePanel {
   onSubmit() {
     if (this.workOrderForm.valid) {
       this.submitForm.emit(this.workOrderForm.value);
-      this.formError = '';
+      this.localFormError = '';
     } else {
-      this.formError = 'Please fill in all required fields';
+      this.localFormError = 'Please fill in all required fields';
     }
   }
 }

@@ -37,6 +37,7 @@ export class Timeline implements OnInit {
   panelInitialData: WorkOrderFormData | null = null;
   editingOrder: WorkOrderDocument | null = null;
   openMenuId: string | null = null;
+  formError = '';
 
   ngOnInit() {
     this.generateDateColumns();
@@ -90,6 +91,7 @@ export class Timeline implements OnInit {
       workCenterId,
     };
     this.editingOrder = null;
+    this.formError = '';
     this.isPanelOpen = true;
   }
 
@@ -123,6 +125,7 @@ export class Timeline implements OnInit {
       endDate: order.data.endDate,
       workCenterId: order.data.workCenterId,
     };
+    this.formError = '';
     this.isPanelOpen = true;
     this.openMenuId = null;
   }
@@ -142,6 +145,18 @@ export class Timeline implements OnInit {
 
   handleFormSubmit(formData: WorkOrderFormData): void {
     const workCenterId = formData.workCenterId || this.selectedWorkCenter;
+
+    const hasOverlap = this.workOrderService.checkOverlap(
+      workCenterId,
+      formData.startDate,
+      formData.endDate,
+      this.editingOrder?.docId,
+    );
+
+    if (hasOverlap) {
+      this.formError = 'This work order overlaps with an existing order on the same work center';
+      return;
+    }
 
     if (this.panelMode === 'create') {
       // Create new work order
@@ -179,5 +194,6 @@ export class Timeline implements OnInit {
     this.isPanelOpen = false;
     this.editingOrder = null;
     this.panelInitialData = null;
+    this.formError = '';
   }
 }

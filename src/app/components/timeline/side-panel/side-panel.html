@@ -36,9 +36,9 @@
         <input id="workOrderEndDate" type="date" formControlName="endDate">
       </div>
 
-      @if (formError) {
+      @if (displayError()) {
         <div class="error-message">
-          {{ formError }}
+          {{ displayError() }}
         </div>
       }
     </form>
