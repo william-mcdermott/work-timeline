@@ -103,4 +103,19 @@ export class Timeline implements OnInit {
       return monthsDiff * this.columnWidth;
     }
   }
+
+  onEdit(order: WorkOrderDocument): void {
+    this.editingOrder = order;
+    this.selectedWorkCenter = order.data.workCenterId;
+    this.workOrderForm.patchValue({
+      name: order.data.name,
+      status: order.data.status,
+      startDate: order.data.startDate,
+      endDate: order.data.endDate,
+    });
+    this.formError = '';
+    this.panelMode = 'edit';
+    this.isPanelOpen = true;
+    this.openMenuId = null;
+  }
 }

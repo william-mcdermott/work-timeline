@@ -1,0 +1,9 @@
+  .today-indicator {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #ef4444;
+    z-index: 5;
+    pointer-events: none;
+  }

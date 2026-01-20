@@ -10,11 +10,16 @@
         {{ col.label }}
       </div>
     </div>
-    <app-work-center-rows [prepForm]="prepForm"></app-work-center-rows>
-    <app-grid-lines
+    <app-work-center-rows
+      [prepForm]="prepForm"
+      [getPositionForDate]="getPositionForDate"
       [columnWidth]="columnWidth"
       [dateColumns]="dateColumns"
-    ></app-grid-lines>
+      [zoomLevel]="zoomLevel"
+      [openMenuId]="openMenuId"
+      [onEdit]="onEdit"
+    ></app-work-center-rows>
+    <app-grid-lines [columnWidth]="columnWidth" [dateColumns]="dateColumns"></app-grid-lines>
     <app-today-indicator [getPositionForDate]="getPositionForDate"></app-today-indicator>
   </div>
 </div>

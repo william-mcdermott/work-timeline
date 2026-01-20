@@ -1,5 +1,19 @@
-<div
-  *ngFor="let wc of workCenters; trackBy: trackByWorkCenter"
-  class="timeline-row"
-  (click)="onTimelineClick(wc.docId, $event)"
-></div>
+@for (wc of workCenters; track wc.docId) {
+  <div
+    class="timeline-row"
+    tabindex="0"
+    role="button"
+    (click)="onTimelineClick(wc.docId, $event)"
+    (keydown.enter)="onTimelineClick(wc.docId, $event)"
+    (keydown.space)="onTimelineClick(wc.docId, $event)"
+  >
+    <app-work-orders
+      [workCenter]="wc"
+      [getPositionForDate]="getPositionForDate"
+      [zoomLevel]="zoomLevel"
+      [columnWidth]="columnWidth"
+      [openMenuId]="openMenuId"
+      [onEdit]="onEdit"
+    ></app-work-orders>
+  </div>
+}
