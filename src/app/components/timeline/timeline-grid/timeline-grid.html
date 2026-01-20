@@ -1,0 +1,8 @@
+  <div class="timeline-grid">
+    <!-- Work Centers Column -->
+    <div class="work-centers-column">
+      <div class="header-cell">WORK CENTER</div>
+      <div *ngFor="let wc of workCenters; trackBy: trackByWorkCenter" class="work-center-cell">
+        {{ wc.data.name }}
+      </div>
+    </div>
