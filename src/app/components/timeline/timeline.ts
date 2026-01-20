@@ -44,12 +44,17 @@ export class Timeline implements OnInit {
   }
 
   generateDateColumns(): void {
-    const start = new Date(2025, 0, 1);
-    const end = new Date(2025, 2, 31);
+    const today = new Date();
     this.dateColumns = [];
 
     if (this.zoomLevel === 'day') {
       this.columnWidth = 80;
+      // Show 45 days before and 45 days after today (90 days total)
+      const start = new Date(today);
+      start.setDate(start.getDate() - 45);
+      const end = new Date(today);
+      end.setDate(end.getDate() + 45);
+
       for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
         this.dateColumns.push({
           label: d.toLocaleDateString('en-US', { day: 'numeric', month: 'short' }),
@@ -58,6 +63,12 @@ export class Timeline implements OnInit {
       }
     } else if (this.zoomLevel === 'week') {
       this.columnWidth = 120;
+      // Show 12 weeks before and 12 weeks after today (24 weeks total)
+      const start = new Date(today);
+      start.setDate(start.getDate() - (12 * 7));
+      const end = new Date(today);
+      end.setDate(end.getDate() + (12 * 7));
+
       for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 7)) {
         this.dateColumns.push({
           label: `Week of ${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`,
@@ -66,8 +77,11 @@ export class Timeline implements OnInit {
       }
     } else {
       this.columnWidth = 180;
-      for (let m = 0; m < 3; m++) {
-        const monthDate = new Date(2025, m, 1);
+      // Show 6 months before and 6 months after today (12 months total)
+      const start = new Date(today.getFullYear(), today.getMonth() - 6, 1);
+
+      for (let m = 0; m < 12; m++) {
+        const monthDate = new Date(start.getFullYear(), start.getMonth() + m, 1);
         this.dateColumns.push({
           label: monthDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
           date: new Date(monthDate).toISOString().split('T')[0],
