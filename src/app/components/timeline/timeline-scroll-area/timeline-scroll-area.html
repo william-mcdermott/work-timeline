@@ -1,0 +1,14 @@
+<div #timelineScroll class="timeline-scroll">
+  <div class="timeline-content" [style.min-width.px]="dateColumns.length * columnWidth">
+    <!-- Date Headers -->
+    <div class="date-headers">
+      <div
+        *ngFor="let col of dateColumns; trackBy: trackByColumn"
+        class="date-header"
+        [style.width.px]="columnWidth"
+      >
+        {{ col.label }}
+      </div>
+    </div>
+  </div>
+</div>
