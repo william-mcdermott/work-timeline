@@ -1,5 +1,5 @@
 import { Component, computed, effect, inject, input, output } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { WorkOrderStatus } from '../../../models/work-order.model';
 
@@ -44,6 +44,21 @@ export class SidePanel {
     { value: 'blocked', label: 'Blocked' },
   ];
 
+  // Custom validator to ensure end date is after start date
+  dateRangeValidator(control: AbstractControl): ValidationErrors | null {
+    const startDate = control.get('startDate')?.value;
+    const endDate = control.get('endDate')?.value;
+
+    if (!startDate || !endDate) {
+      return null;
+    }
+
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+
+    return end >= start ? null : { dateRange: true };
+  }
+
   constructor() {
     // Initialize form
     this.workOrderForm = this.fb.group({
@@ -51,6 +66,8 @@ export class SidePanel {
       status: ['open', Validators.required],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
+    }, {
+      validators: this.dateRangeValidator
     });
 
     // Watch for initial data changes and populate form
@@ -68,7 +85,11 @@ export class SidePanel {
       this.submitForm.emit(this.workOrderForm.value);
       this.localFormError = '';
     } else {
-      this.localFormError = 'Please fill in all required fields';
+      if (this.workOrderForm.errors?.['dateRange']) {
+        this.localFormError = 'End date must be on or after start date';
+      } else {
+        this.localFormError = 'Please fill in all required fields';
+      }
     }
   }
 }
