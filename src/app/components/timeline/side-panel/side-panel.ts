@@ -1,6 +1,15 @@
-import { Component, inject, input, OnInit } from '@angular/core';
+import { Component, effect, inject, input, output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { WorkOrderStatus } from '../../../models/work-order.model';
+
+interface WorkOrderFormData {
+  name: string;
+  status: WorkOrderStatus;
+  startDate: string;
+  endDate: string;
+  workCenterId?: string;
+}
 
 @Component({
   selector: 'app-side-panel',
@@ -8,14 +17,20 @@ import { CommonModule } from '@angular/common';
   templateUrl: './side-panel.html',
   styleUrl: './side-panel.scss',
 })
-export class SidePanel implements OnInit {
+export class SidePanel {
   private fb = inject(FormBuilder);
 
+  // Inputs
   isPanelOpen = input<boolean>(false);
-  closePanel = input.required<() => void>();
+  panelMode = input<'create' | 'edit'>('create');
+  initialData = input<WorkOrderFormData | null>(null);
 
+  // Outputs
+  closePanel = input.required<() => void>();
+  readonly submitForm = output<WorkOrderFormData>();
+
+  // Form state
   workOrderForm!: FormGroup;
-  panelMode: 'create' | 'edit' = 'create';
   formError = '';
 
   statusOptions = [
@@ -25,20 +40,29 @@ export class SidePanel implements OnInit {
     { value: 'blocked', label: 'Blocked' },
   ];
 
-  ngOnInit() {
+  constructor() {
+    // Initialize form
     this.workOrderForm = this.fb.group({
       name: ['', Validators.required],
       status: ['open', Validators.required],
       startDate: ['', Validators.required],
       endDate: ['', Validators.required],
     });
+
+    // Watch for initial data changes and populate form
+    effect(() => {
+      const data = this.initialData();
+      if (data) {
+        this.workOrderForm.patchValue(data);
+        this.formError = '';
+      }
+    });
   }
 
   onSubmit() {
     if (this.workOrderForm.valid) {
-      // Handle form submission
-      console.log('Form submitted:', this.workOrderForm.value);
-      this.closePanel()();
+      this.submitForm.emit(this.workOrderForm.value);
+      this.formError = '';
     } else {
       this.formError = 'Please fill in all required fields';
     }

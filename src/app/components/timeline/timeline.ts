@@ -1,15 +1,22 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Header } from './header/header';
 import { TimelineGrid } from './timeline-grid/timeline-grid';
-import { WorkOrderDocument, ZoomLevel } from '../../models/work-order.model';
+import { WorkOrderDocument, WorkOrderStatus, ZoomLevel } from '../../models/work-order.model';
 import { TimelineScrollArea } from './timeline-scroll-area/timeline-scroll-area';
-import { FormGroup } from '@angular/forms';
 import { WorkOrderService } from '../../services/work-order.service';
 import { SidePanel } from './side-panel/side-panel';
 
 export interface DateColumn {
   label: string;
   date: string;
+}
+
+interface WorkOrderFormData {
+  name: string;
+  status: WorkOrderStatus;
+  startDate: string;
+  endDate: string;
+  workCenterId?: string;
 }
 
 @Component({
@@ -25,12 +32,11 @@ export class Timeline implements OnInit {
   dateColumns: DateColumn[] = [];
   columnWidth = 80;
   selectedWorkCenter = '';
-  workOrderForm!: FormGroup;
   panelMode: 'create' | 'edit' = 'create';
   isPanelOpen = false;
+  panelInitialData: WorkOrderFormData | null = null;
   editingOrder: WorkOrderDocument | null = null;
   openMenuId: string | null = null;
-  formError = '';
 
   ngOnInit() {
     this.generateDateColumns();
@@ -75,14 +81,14 @@ export class Timeline implements OnInit {
 
   prepForm(workCenterId: string, clickedDate: Date, endDate: Date) {
     this.selectedWorkCenter = workCenterId;
-    this.workOrderForm.patchValue({
+    this.panelMode = 'create';
+    this.panelInitialData = {
       name: '',
       status: 'open',
-      startDate: clickedDate,
+      startDate: clickedDate.toISOString().split('T')[0],
       endDate: endDate.toISOString().split('T')[0],
-    });
-    this.formError = '';
-    this.panelMode = 'create';
+      workCenterId,
+    };
     this.editingOrder = null;
     this.isPanelOpen = true;
   }
@@ -109,14 +115,14 @@ export class Timeline implements OnInit {
   onEdit(order: WorkOrderDocument): void {
     this.editingOrder = order;
     this.selectedWorkCenter = order.data.workCenterId;
-    this.workOrderForm.patchValue({
+    this.panelMode = 'edit';
+    this.panelInitialData = {
       name: order.data.name,
       status: order.data.status,
       startDate: order.data.startDate,
       endDate: order.data.endDate,
-    });
-    this.formError = '';
-    this.panelMode = 'edit';
+      workCenterId: order.data.workCenterId,
+    };
     this.isPanelOpen = true;
     this.openMenuId = null;
   }
@@ -134,8 +140,44 @@ export class Timeline implements OnInit {
     this.openMenuId = null;
   }
 
+  handleFormSubmit(formData: WorkOrderFormData): void {
+    const workCenterId = formData.workCenterId || this.selectedWorkCenter;
+
+    if (this.panelMode === 'create') {
+      // Create new work order
+      const newOrder: WorkOrderDocument = {
+        docId: 'wo' + Date.now(),
+        docType: 'workOrder',
+        data: {
+          name: formData.name,
+          workCenterId,
+          status: formData.status,
+          startDate: formData.startDate,
+          endDate: formData.endDate,
+        },
+      };
+      this.workOrderService.addWorkOrder(newOrder);
+    } else if (this.editingOrder) {
+      // Update existing work order
+      const updatedOrder: WorkOrderDocument = {
+        ...this.editingOrder,
+        data: {
+          ...this.editingOrder.data,
+          name: formData.name,
+          status: formData.status,
+          startDate: formData.startDate,
+          endDate: formData.endDate,
+        },
+      };
+      this.workOrderService.updateWorkOrder(updatedOrder);
+    }
+
+    this.closePanel();
+  }
+
   closePanel(): void {
     this.isPanelOpen = false;
     this.editingOrder = null;
+    this.panelInitialData = null;
   }
 }

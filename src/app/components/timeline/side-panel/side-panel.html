@@ -46,7 +46,7 @@
     <div class="panel-footer">
       <button class="btn-secondary" (click)="closePanel()()">Cancel</button>
       <button class="btn-primary" (click)="onSubmit()">
-        {{ panelMode === 'create' ? 'Create' : 'Save' }}
+        {{ panelMode() === 'create' ? 'Create' : 'Save' }}
       </button>
     </div>
   </div>
