@@ -2,8 +2,8 @@
   overflow: visible;
   background: #fafafa;
   min-width: 0;
-  padding-left: 220px;
   margin-left: -220px;
+  padding-left: 220px;
 }
 
 .timeline-content {
@@ -68,8 +68,8 @@
 // Mobile responsive styles
 @media (max-width: 768px) {
   .timeline-scroll {
-    padding-left: 160px;
     margin-left: -160px;
+    padding-left: 160px;
   }
 
   .date-headers {
@@ -94,8 +94,8 @@
 
 @media (max-width: 480px) {
   .timeline-scroll {
-    padding-left: 120px;
     margin-left: -120px;
+    padding-left: 120px;
   }
 
   .date-headers {
