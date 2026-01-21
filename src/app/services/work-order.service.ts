@@ -6,6 +6,8 @@ import { WorkCenterDocument, WorkOrderDocument } from '../models/work-order.mode
   providedIn: 'root'
 })
 export class WorkOrderService {
+  private readonly STORAGE_KEY = 'workOrderTimeline_workOrders';
+
   private workCenters: WorkCenterDocument[] = [
     { docId: 'wc1', docType: 'workCenter', data: { name: 'Extrusion Line A' } },
     { docId: 'wc2', docType: 'workCenter', data: { name: 'CNC Machine 1' } },
@@ -14,7 +16,7 @@ export class WorkOrderService {
     { docId: 'wc5', docType: 'workCenter', data: { name: 'Packaging Line' } },
   ];
 
-  private workOrdersSubject = new BehaviorSubject<WorkOrderDocument[]>([
+  private defaultWorkOrders: WorkOrderDocument[] = [
     {
       docId: 'wo1',
       docType: 'workOrder',
@@ -103,9 +105,42 @@ export class WorkOrderService {
         endDate: '2026-01-23',
       },
     },
-  ]);
+  ];
 
+  private workOrdersSubject = new BehaviorSubject<WorkOrderDocument[]>(this.loadFromStorage());
   workOrders$: Observable<WorkOrderDocument[]> = this.workOrdersSubject.asObservable();
+
+  constructor() {
+    // Subscribe to changes and save to localStorage
+    this.workOrders$.subscribe(orders => {
+      this.saveToStorage(orders);
+    });
+  }
+
+  private loadFromStorage(): WorkOrderDocument[] {
+    try {
+      const stored = localStorage.getItem(this.STORAGE_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        // Validate that it's an array
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed;
+        }
+      }
+    } catch (error) {
+      console.error('Error loading work orders from localStorage:', error);
+    }
+    // Return default data if nothing in storage or error occurred
+    return this.defaultWorkOrders;
+  }
+
+  private saveToStorage(orders: WorkOrderDocument[]): void {
+    try {
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(orders));
+    } catch (error) {
+      console.error('Error saving work orders to localStorage:', error);
+    }
+  }
 
   getWorkCenters(): WorkCenterDocument[] {
     return this.workCenters;
@@ -144,5 +179,13 @@ export class WorkOrderService {
 
       return (start <= woEnd && end >= woStart);
     });
+  }
+
+  resetToDefaults(): void {
+    this.workOrdersSubject.next([...this.defaultWorkOrders]);
+  }
+
+  clearAll(): void {
+    this.workOrdersSubject.next([]);
   }
 }
