@@ -1,1 +1,189 @@
 /* You can add global styles to this file, and also import other style files */
+@import '@ng-select/ng-select/themes/default.theme.css';
+
+/* Global font */
+* {
+  font-family: "Circular Std", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Datepicker dropdown backdrop */
+.ngb-dp-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 1040;
+}
+
+/* NgbDatepicker custom styling */
+ngb-datepicker {
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  z-index: 1050;
+  position: relative;
+
+  .visually-hidden {
+    display: none !important;
+  }
+
+  .ngb-dp-header {
+    background: white;
+    padding: 12px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .ngb-dp-navigation-chevron {
+    display: none !important;
+  }
+
+  .ngb-dp-month-name {
+    display: none !important;
+  }
+
+  .ngb-dp-navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .ngb-dp-arrow {
+      display: none !important;
+    }
+
+    > div:not(.ngb-dp-navigation-select) {
+      display: none !important;
+    }
+
+    // Hide all text nodes and spans that aren't in the select
+    > * {
+      &:not(.ngb-dp-navigation-select) {
+        visibility: hidden !important;
+        width: 0 !important;
+        height: 0 !important;
+        overflow: hidden !important;
+      }
+    }
+  }
+
+  .ngb-dp-navigation-select {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    width: 100%;
+
+    select {
+      padding: 6px 8px;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      font-size: 14px;
+      background: white;
+      cursor: pointer;
+
+      &:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+      }
+    }
+  }
+
+  .ngb-dp-arrow {
+    button {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      color: #6b7280;
+      border-radius: 4px;
+
+      &:hover {
+        background: #f3f4f6;
+        color: #111827;
+      }
+
+      &:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  .ngb-dp-month {
+    background: white;
+    padding: 12px;
+  }
+
+  .ngb-dp-weekdays {
+    border-bottom: 1px solid #e5e7eb;
+    padding-bottom: 8px;
+    margin-bottom: 4px;
+  }
+
+  .ngb-dp-weekday {
+    font-size: 12px;
+    font-weight: 600;
+    color: #6b7280;
+    text-align: center;
+  }
+
+  .ngb-dp-week {
+    display: flex;
+  }
+
+  .ngb-dp-day {
+    text-align: center;
+
+    .btn-light {
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: transparent;
+      color: #111827;
+      font-size: 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      margin: 2px;
+
+      &:hover {
+        background: #f3f4f6;
+      }
+
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+      }
+
+      &.bg-primary {
+        background: #3b82f6 !important;
+        color: white !important;
+      }
+    }
+
+    &.disabled {
+      .btn-light {
+        color: #d1d5db;
+        cursor: not-allowed;
+
+        &:hover {
+          background: transparent;
+        }
+      }
+    }
+
+    &.hidden {
+      visibility: hidden;
+    }
+
+    &.outside {
+      .btn-light {
+        color: #9ca3af;
+      }
+    }
+  }
+}

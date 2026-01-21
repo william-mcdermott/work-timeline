@@ -4,6 +4,7 @@
   background: rgba(0, 0, 0, 0.3);
   z-index: 100;
   animation: fadeIn 0.2s ease-out;
+  pointer-events: auto;
 }
 
 @keyframes fadeIn {
@@ -38,29 +39,60 @@
   animation: slideIn 0.3s ease-out;
 
   .panel-header {
-    padding: 20px 24px;
+    padding: 24px;
     border-bottom: 1px solid #e5e7eb;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
+    gap: 16px;
 
     h2 {
-      font-size: 18px;
+      font-size: 20px;
       font-weight: 600;
-      margin: 0;
+      margin: 0 0 4px 0;
       color: #111827;
     }
 
-    .close-button {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 4px;
-      display: flex;
+    .panel-subtitle {
+      margin: 0;
+      font-size: 14px;
       color: #6b7280;
+      font-weight: 400;
+    }
 
-      &:hover {
-        color: #111827;
+    .panel-actions {
+      display: flex;
+      gap: 8px;
+      flex-shrink: 0;
+
+      button {
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        font-family: inherit;
+        white-space: nowrap;
+
+        &.btn-secondary {
+          border: 1px solid #d1d5db;
+          background: white;
+          color: #374151;
+
+          &:hover {
+            background: #f9fafb;
+          }
+        }
+
+        &.btn-primary {
+          border: none;
+          background: #3b82f6;
+          color: white;
+
+          &:hover {
+            background: #2563eb;
+          }
+        }
       }
     }
   }
@@ -71,24 +103,27 @@
     overflow-y: auto;
 
     .form-group {
-      margin-bottom: 20px;
+      margin-bottom: 24px;
 
       label {
         display: block;
-        font-size: 14px;
-        font-weight: 500;
-        margin-bottom: 6px;
-        color: #374151;
+        font-size: 13px;
+        font-weight: 400;
+        margin-bottom: 8px;
+        color: #6b7280;
       }
 
       input,
       select {
         width: 100%;
-        padding: 8px 12px;
+        max-width: 100%;
+        padding: 10px 12px;
         border: 1px solid #d1d5db;
         border-radius: 6px;
         font-size: 14px;
         font-family: inherit;
+        background: white;
+        box-sizing: border-box;
 
         &:focus {
           outline: none;
@@ -97,28 +132,82 @@
         }
       }
 
+      input[type="date"] {
+        appearance: none;
+        -webkit-appearance: none;
+      }
+
       select {
-        background: white;
         cursor: pointer;
       }
 
-      .status-select-wrapper {
-        position: relative;
-        display: flex;
-        align-items: center;
-        gap: 8px;
+      .status-select {
+        ::ng-deep {
+          .ng-select-container {
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            min-height: 42px;
 
-        .status-pill-indicator {
-          width: 16px;
-          height: 16px;
-          border-radius: 50%;
-          flex-shrink: 0;
-          transition: background-color 0.2s;
-        }
+            &:hover {
+              border-color: #d1d5db;
+            }
+          }
 
-        select {
-          flex: 1;
+          .ng-value-container {
+            padding: 0 12px;
+          }
+
+          .ng-placeholder {
+            color: #9ca3af;
+          }
+
+          .ng-arrow-wrapper {
+            padding-right: 12px;
+
+            .ng-arrow {
+              border-color: #6b7280 transparent transparent;
+              border-style: solid;
+              border-width: 5px 5px 2.5px;
+            }
+          }
+
+          &.ng-select-focused {
+            .ng-select-container {
+              border-color: #3b82f6;
+              box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            }
+          }
+
+          .ng-dropdown-panel {
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            margin-top: 4px;
+
+            .ng-dropdown-panel-items {
+              .ng-option {
+                padding: 8px 12px;
+
+                &.ng-option-marked {
+                  background-color: #f9fafb;
+                }
+
+                &.ng-option-selected {
+                  background-color: #eff6ff;
+                }
+              }
+            }
+          }
         }
+      }
+
+      .status-pill {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 13px;
+        font-weight: 500;
+        color: #374151;
       }
     }
 
@@ -132,41 +221,7 @@
       margin-top: 20px;
     }
   }
-
-  .panel-footer {
-    padding: 20px 24px;
-    border-top: 1px solid #e5e7eb;
-    display: flex;
-    gap: 12px;
-
-    button {
-      flex: 1;
-      padding: 10px;
-      border-radius: 6px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-      font-family: inherit;
-
-      &.btn-secondary {
-        border: 1px solid #d1d5db;
-        background: white;
-        color: #374151;
-
-        &:hover {
-          background: #f9fafb;
-        }
-      }
-
-      &.btn-primary {
-        border: none;
-        background: #3b82f6;
-        color: white;
-
-        &:hover {
-          background: #2563eb;
-        }
-      }
-    }
-  }
+}
+.visually-hidden {
+  display: none;
 }

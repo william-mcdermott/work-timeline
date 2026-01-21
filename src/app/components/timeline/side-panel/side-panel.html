@@ -2,41 +2,77 @@
   <div tabindex="0" class="panel-overlay" (click)="closePanel()()" (keyup)="closePanel()()"></div>
   <div class="side-panel">
     <div class="panel-header">
-      <h2>Work Order Details</h2>
-      <button class="close-button" (click)="closePanel()()">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      </button>
+      <div>
+        <h2>Work Order Details</h2>
+        <p class="panel-subtitle">Specify the dates, name and status for this order</p>
+      </div>
+      <div class="panel-actions">
+        <button class="btn-secondary" (click)="closePanel()()">Cancel</button>
+        <button class="btn-primary" (click)="onSubmit()">
+          {{ panelMode() === 'create' ? 'Create' : 'Save' }}
+        </button>
+      </div>
     </div>
 
     <form [formGroup]="workOrderForm" class="panel-content">
       <div class="form-group">
-        <label for="workOrderName">Work Order Name *</label>
+        <label for="workOrderName">Work Order Name</label>
         <input id="workOrderName" type="text" formControlName="name" placeholder="Enter work order name">
       </div>
 
       <div class="form-group">
-        <label for="workOrderStatus">Status *</label>
-        <div class="status-select-wrapper">
-          <div class="status-pill-indicator" [style.background-color]="getCurrentStatusColor()"></div>
-          <select id="workOrderStatus" formControlName="status">
-            @for (opt of statusOptions; track opt.value) {
-              <option [value]="opt.value">{{ opt.label }}</option>
-            }
-          </select>
-        </div>
+        <label for="workOrderStatus">Status</label>
+        <ng-select
+          id="workOrderStatus"
+          formControlName="status"
+          [items]="statusOptions"
+          bindLabel="label"
+          bindValue="value"
+          [clearable]="false"
+          [searchable]="false"
+          class="status-select"
+        >
+          <ng-template ng-label-tmp let-item="item">
+            <span class="status-pill" [style.background-color]="item.color">
+              {{ item.label }}
+            </span>
+          </ng-template>
+          <ng-template ng-option-tmp let-item="item">
+            {{ item.label }}
+          </ng-template>
+        </ng-select>
       </div>
 
       <div class="form-group">
-        <label for="workOrderStartDate">Start Date *</label>
-        <input id="workOrderStartDate" type="date" formControlName="startDate">
+        <label for="workOrderEndDate">End date</label>
+        <input
+          id="workOrderEndDate"
+          class="form-control"
+          placeholder="mm.dd.yyyy"
+          formControlName="endDate"
+          ngbDatepicker
+          #endDatePicker="ngbDatepicker"
+          [navigation]="'select'"
+          [displayMonths]="1"
+          container="body"
+          (click)="endDatePicker.open()"
+        >
       </div>
 
       <div class="form-group">
-        <label for="workOrderEndDate">End Date *</label>
-        <input id="workOrderEndDate" type="date" formControlName="endDate">
+        <label for="workOrderStartDate">Start date</label>
+        <input
+          id="workOrderStartDate"
+          class="form-control"
+          placeholder="mm.dd.yyyy"
+          formControlName="startDate"
+          ngbDatepicker
+          #startDatePicker="ngbDatepicker"
+          [navigation]="'select'"
+          [displayMonths]="1"
+          container="body"
+          (click)="startDatePicker.open()"
+        >
       </div>
 
       @if (displayError()) {
@@ -45,13 +81,6 @@
         </div>
       }
     </form>
-
-    <div class="panel-footer">
-      <button class="btn-secondary" (click)="closePanel()()">Cancel</button>
-      <button class="btn-primary" (click)="onSubmit()">
-        {{ panelMode() === 'create' ? 'Create' : 'Save' }}
-      </button>
-    </div>
   </div>
 }
 
