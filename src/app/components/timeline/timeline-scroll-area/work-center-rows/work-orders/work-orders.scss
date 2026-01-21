@@ -1,0 +1,104 @@
+.work-order-bar {
+  position: absolute;
+  height: 36px;
+  border-radius: 6px;
+  cursor: pointer;
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  transition: all 0.2s;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+
+    .work-order-menu {
+      opacity: 1;
+    }
+  }
+
+  .order-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: #1a1a1a;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+  }
+
+  .status-badge {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 4px;
+    white-space: nowrap;
+    background: rgba(255, 255, 255, 0.9);
+    flex-shrink: 0;
+  }
+
+  .work-order-menu {
+    position: relative;
+    opacity: 0;
+    transition: opacity 0.2s;
+
+    .menu-button {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      transition: background 0.2s;
+
+      &:hover {
+        background: rgba(0, 0, 0, 0.1);
+      }
+
+      svg {
+        width: 16px;
+        height: 16px;
+        fill: #1a1a1a;
+      }
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: 4px;
+      background: white;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      z-index: 100;
+      min-width: 120px;
+
+      .menu-item {
+        display: block;
+        width: 100%;
+        padding: 10px 16px;
+        border: none;
+        background: none;
+        text-align: left;
+        font-size: 14px;
+        color: #1a1a1a;
+        cursor: pointer;
+        transition: background 0.2s;
+
+        &:hover {
+          background: #f3f4f6;
+        }
+
+        &.delete {
+          color: #ef4444;
+        }
+      }
+    }
+  }
+}

@@ -110,6 +110,10 @@ export class Timeline implements OnInit {
   }
 
   getPositionForDate(date: string): number {
+    if (!this.dateColumns || this.dateColumns.length === 0) {
+      return 0;
+    }
+
     const targetDate = new Date(date);
     const startDate = new Date(this.dateColumns[0].date);
     const daysDiff = Math.floor(
