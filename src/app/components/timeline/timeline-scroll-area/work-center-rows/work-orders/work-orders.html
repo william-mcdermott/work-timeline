@@ -2,12 +2,14 @@
   <div
     tabindex="0"
     class="work-order-bar"
+    [class.menu-open]="openMenuId() === wo.docId"
     [style.left.px]="getPositionForDate()(wo.data.startDate)"
     [style.width.px]="getWidthForDateRange(wo.data.startDate, wo.data.endDate)"
     [style.background-color]="statusConfig[wo.data.status].color"
-    [style.z-index]="openMenuId() === wo.docId ? 10000 : 1"
     (click)="$event.stopPropagation()"
     (keyup)="$event.stopPropagation()"
+    (mouseenter)="onMouseEnter($event, wo.docId)"
+    (mouseleave)="onMouseLeave()"
   >
     <div class="order-name">{{ wo.data.name }}</div>
     <div class="status-badge">{{ statusConfig[wo.data.status].label }}</div>
@@ -62,5 +64,38 @@
         </div>
       }
     </div>
+  </div>
+}
+
+@if (hoveredOrderId()) {
+  <div
+    class="tooltip-fixed"
+    [style.top.px]="tooltipPosition().top"
+    [style.left.px]="tooltipPosition().left"
+  >
+    @for (wo of workOrders(); track wo.docId) {
+      @if (wo.docId === hoveredOrderId()) {
+        <div class="tooltip-row">
+          <span class="tooltip-label">Name:</span>
+          <span class="tooltip-value">{{ wo.data.name }}</span>
+        </div>
+        <div class="tooltip-row">
+          <span class="tooltip-label">Status:</span>
+          <span class="tooltip-value">{{ statusConfig[wo.data.status].label }}</span>
+        </div>
+        <div class="tooltip-row">
+          <span class="tooltip-label">Start Date:</span>
+          <span class="tooltip-value">{{ formatDate(wo.data.startDate) }}</span>
+        </div>
+        <div class="tooltip-row">
+          <span class="tooltip-label">End Date:</span>
+          <span class="tooltip-value">{{ formatDate(wo.data.endDate) }}</span>
+        </div>
+        <div class="tooltip-row">
+          <span class="tooltip-label">Work Center:</span>
+          <span class="tooltip-value">{{ workCenter().data.name }}</span>
+        </div>
+      }
+    }
   </div>
 }

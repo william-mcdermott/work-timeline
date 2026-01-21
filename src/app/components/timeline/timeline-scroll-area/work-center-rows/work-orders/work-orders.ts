@@ -32,6 +32,8 @@ export class WorkOrders {
 
   // Local state
   openMenuId = signal<string | null>(null);
+  hoveredOrderId = signal<string | null>(null);
+  tooltipPosition = signal<{ top: number; left: number }>({ top: 0, left: 0 });
 
   // Convert observable to signal for reactivity
   private allWorkOrders = toSignal(this.workOrderService.workOrders$, { initialValue: [] });
@@ -66,15 +68,58 @@ export class WorkOrders {
   toggleMenu(orderId: string, event: Event): void {
     event.stopPropagation();
     this.openMenuId.update(current => current === orderId ? null : orderId);
+    this.hoveredOrderId.set(null);
   }
 
   handleEdit(workOrder: WorkOrderDocument): void {
     this.editRequested.emit(workOrder);
     this.openMenuId.set(null);
+    this.hoveredOrderId.set(null);
   }
 
   handleDelete(orderId: string): void {
     this.deleteRequested.emit(orderId);
     this.openMenuId.set(null);
+  }
+
+  formatDate(dateString: string): string {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+  }
+
+  onMouseEnter(event: MouseEvent, orderId: string): void {
+    const target = event.currentTarget as HTMLElement;
+    const rect = target.getBoundingClientRect();
+
+    // Calculate center position
+    let left = rect.left + (rect.width / 2);
+
+    // Tooltip width is approximately 220px (min-width from CSS)
+    const tooltipWidth = 220;
+    const padding = 16;
+
+    // Check if tooltip would go off the right edge
+    if (left + (tooltipWidth / 2) > window.innerWidth - padding) {
+      left = window.innerWidth - padding - (tooltipWidth / 2);
+    }
+
+    // Check if tooltip would go off the left edge
+    if (left - (tooltipWidth / 2) < padding) {
+      left = padding + (tooltipWidth / 2);
+    }
+
+    this.tooltipPosition.set({
+      top: rect.top - 8,
+      left: left
+    });
+    this.hoveredOrderId.set(orderId);
+  }
+
+  onMouseLeave(): void {
+    this.hoveredOrderId.set(null);
   }
 }
