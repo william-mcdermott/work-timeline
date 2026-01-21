@@ -7,6 +7,24 @@
 
   &:hover {
     background: #f3f4f6;
+
+    .hover-hint {
+      opacity: 1;
+    }
+  }
+
+  .hover-hint {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 14px;
+    color: #9ca3af;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity 0.2s;
+    pointer-events: none;
+    z-index: 1;
   }
 
   .grid-lines {
