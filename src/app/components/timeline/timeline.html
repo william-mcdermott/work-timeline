@@ -1,5 +1,5 @@
 <div class="timeline-container">
-  <app-header [zoomLevel]="zoomLevel" [generateDateColumns]="generateDateColumns"></app-header>
+  <app-header [zoomLevel]="zoomLevel" (zoomLevelChange)="handleZoomLevelChange($event)"></app-header>
   <div class="timeline-body">
     <app-timeline-grid></app-timeline-grid>
     <app-timeline-scroll-area

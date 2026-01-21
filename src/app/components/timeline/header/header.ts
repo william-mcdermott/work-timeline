@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { ZoomLevel } from '../../../models/work-order.model';
 import { FormsModule } from '@angular/forms';
 
@@ -7,10 +7,13 @@ import { FormsModule } from '@angular/forms';
   imports: [FormsModule],
   templateUrl: './header.html',
   styleUrl: './header.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Header {
-  constructor() {}
-  @Input() zoomLevel: ZoomLevel = 'month';
-  @Input() generateDateColumns!: Function
+  zoomLevel = input.required<ZoomLevel>();
+  readonly zoomLevelChange = output<ZoomLevel>();
 
+  onZoomChange(newZoomLevel: ZoomLevel): void {
+    this.zoomLevelChange.emit(newZoomLevel);
+  }
 }

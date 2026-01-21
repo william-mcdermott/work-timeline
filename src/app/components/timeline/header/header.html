@@ -2,7 +2,7 @@
     <h1>Work Orders</h1>
     <div class="controls">
       <span class="label">Timescale:</span>
-      <select [(ngModel)]="zoomLevel" (change)="generateDateColumns()" class="zoom-select">
+      <select [value]="zoomLevel()" (change)="onZoomChange($any($event.target).value)" class="zoom-select">
         <option value="day">Day</option>
         <option value="week">Week</option>
         <option value="month">Month</option>

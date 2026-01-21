@@ -94,6 +94,11 @@ export class Timeline implements OnInit {
     this.generateDateColumns();
   }
 
+  handleZoomLevelChange(newZoomLevel: ZoomLevel): void {
+    this.zoomLevel = newZoomLevel;
+    this.generateDateColumns();
+  }
+
   prepForm(workCenterId: string, clickedDate: Date, endDate: Date) {
     this.selectedWorkCenter = workCenterId;
     this.panelMode = 'create';
