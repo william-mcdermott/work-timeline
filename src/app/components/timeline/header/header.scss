@@ -24,28 +24,76 @@
     }
 
     .zoom-select {
-      padding: 6px 32px 6px 12px;
-      border: 1px solid #e0e0e0;
-      border-radius: 6px;
-      font-size: 14px;
-      font-weight: 500;
-      color: #6366f1;
-      background: white;
-      cursor: pointer;
-      appearance: none;
-      background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236366f1' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: right 10px center;
-      transition: border-color 0.2s;
+      width: 120px;
 
-      &:hover {
-        border-color: #6366f1;
+      ::ng-deep .ng-select-container {
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        min-height: 36px;
+        background: white;
+
+        &:hover {
+          border-color: #6366f1;
+        }
       }
 
-      &:focus {
-        outline: none;
-        border-color: #6366f1;
-        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      ::ng-deep .ng-value-container {
+        padding: 0 12px;
+      }
+
+      ::ng-deep .ng-value {
+        font-size: 14px;
+        font-weight: 500;
+        color: #6366f1;
+      }
+
+      ::ng-deep .ng-placeholder {
+        font-size: 14px;
+        color: #9ca3af;
+      }
+
+      ::ng-deep .ng-arrow-wrapper {
+        padding-right: 10px;
+
+        .ng-arrow {
+          border-color: #6366f1 transparent transparent;
+          border-width: 5px 5px 2.5px;
+        }
+      }
+
+      ::ng-deep .ng-dropdown-panel {
+        border: 1px solid #e0e0e0;
+        border-radius: 6px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        margin-top: 4px;
+      }
+
+      ::ng-deep .ng-option {
+        font-size: 14px;
+        padding: 10px 12px;
+        color: #1a1a1a;
+        font-weight: 400;
+
+        &:hover:not(.ng-option-selected) {
+          background: #f3f4f6;
+        }
+
+        &.ng-option-selected {
+          background: white;
+          color: #6366f1;
+          font-weight: 500;
+
+          &:hover {
+            background: #f9fafb;
+          }
+        }
+      }
+
+      &.ng-select-focused {
+        ::ng-deep .ng-select-container {
+          border-color: #6366f1;
+          box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
       }
     }
   }

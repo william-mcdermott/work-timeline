@@ -55,4 +55,15 @@ export class TimelineScrollArea implements AfterViewInit {
   handleDelete(orderId: string): void {
     this.deleteRequested.emit(orderId);
   }
+
+  isCurrentMonth(dateString: string): boolean {
+    if (this.zoomLevel !== 'month') {
+      return false;
+    }
+    // Parse date string as YYYY-MM-DD to avoid timezone issues
+    const [year, month] = dateString.split('-').map(Number);
+    // For demo purposes, treat January 2026 as the "current" month
+    // month in the string is 1-based (01 = January)
+    return month === 1 && year === 2026;
+  }
 }

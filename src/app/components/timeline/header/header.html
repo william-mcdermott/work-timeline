@@ -1,11 +1,17 @@
-  <div class="header">
-    <h1>Work Orders</h1>
-    <div class="controls">
-      <span class="label">Timescale:</span>
-      <select [value]="zoomLevel()" (change)="onZoomChange($any($event.target).value)" class="zoom-select">
-        <option value="day">Day</option>
-        <option value="week">Week</option>
-        <option value="month">Month</option>
-      </select>
-    </div>
+<div class="header">
+  <h1>Work Orders</h1>
+  <div class="controls">
+    <span class="label">Timescale:</span>
+    <ng-select
+      [items]="zoomOptions"
+      bindLabel="label"
+      bindValue="value"
+      [(ngModel)]="selectedZoom"
+      (ngModelChange)="onZoomChange($event)"
+      [clearable]="false"
+      [searchable]="false"
+      class="zoom-select"
+    >
+    </ng-select>
   </div>
+</div>

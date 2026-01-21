@@ -10,6 +10,19 @@
         {{ col.label }}
       </div>
     </div>
+
+    <!-- Current Month Badge -->
+    @for (col of dateColumns; track col.date; let i = $index) {
+      @if (isCurrentMonth(col.date)) {
+        <div
+          class="current-month-badge"
+          [style.left.px]="i * columnWidth + (columnWidth / 2)"
+        >
+          Current month
+        </div>
+      }
+    }
+
     <div class="grid-lines-container" [style.width.px]="dateColumns.length * columnWidth">
       <div class="grid-line" *ngFor="let col of dateColumns" [style.width.px]="columnWidth"></div>
     </div>

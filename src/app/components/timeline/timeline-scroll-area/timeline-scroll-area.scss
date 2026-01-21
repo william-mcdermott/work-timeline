@@ -49,3 +49,18 @@
     min-width: 80px;
   }
 }
+
+.current-month-badge {
+  position: absolute;
+  top: 48px;
+  background: #6366f1;
+  color: white;
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 12px;
+  border-radius: 12px;
+  white-space: nowrap;
+  z-index: 15;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
