@@ -7,3 +7,10 @@
     z-index: 5;
     pointer-events: none;
   }
+
+// Mobile responsive styles
+@media (max-width: 480px) {
+  .today-indicator {
+    width: 3px;
+  }
+}

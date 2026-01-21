@@ -4,6 +4,8 @@
   overflow-y: hidden;
   background: #fafafa;
   min-width: 0;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-x;
 }
 
 .timeline-content {
@@ -63,4 +65,47 @@
   z-index: 15;
   pointer-events: none;
   transform: translateX(-50%);
+}
+
+// Mobile responsive styles
+@media (max-width: 768px) {
+  .date-headers {
+    height: 40px;
+
+    .date-header {
+      font-size: 11px;
+      min-width: 60px;
+    }
+  }
+
+  .grid-lines-container {
+    top: 40px;
+  }
+
+  .current-month-badge {
+    top: 40px;
+    font-size: 9px;
+    padding: 2px 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .date-headers {
+    height: 36px;
+
+    .date-header {
+      font-size: 10px;
+      min-width: 50px;
+    }
+  }
+
+  .grid-lines-container {
+    top: 36px;
+  }
+
+  .current-month-badge {
+    top: 36px;
+    font-size: 8px;
+    padding: 2px 6px;
+  }
 }

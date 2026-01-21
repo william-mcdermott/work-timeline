@@ -4,10 +4,29 @@
   display: flex;
   flex-direction: column;
   background: #f8f9fa;
+  touch-action: pan-x pan-y;
 }
 
 .timeline-body {
   flex: 1;
   display: flex;
   min-height: 0;
+}
+
+// Mobile responsive styles
+@media (max-width: 768px) {
+  .timeline-container {
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  .timeline-body {
+    overflow: hidden;
+  }
+}
+
+@media (max-width: 480px) {
+  .timeline-container {
+    font-size: 14px;
+  }
 }

@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, output, Injectable } from '@angular/core';
+import { Component, computed, effect, inject, input, output, Injectable, signal } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -58,10 +58,10 @@ export class SidePanel {
 
   // Form state
   workOrderForm!: FormGroup;
-  localFormError = '';
+  localFormError = signal('');
 
   // Computed combined error message
-  displayError = computed(() => this.formError() || this.localFormError);
+  displayError = computed(() => this.formError() || this.localFormError());
 
   // Get current status color
   getCurrentStatusColor(): string {
@@ -139,7 +139,8 @@ export class SidePanel {
     // Watch for initial data changes and populate form
     effect(() => {
       const data = this.initialData();
-      if (data) {
+      const isOpen = this.isPanelOpen();
+      if (data && isOpen) {
         // Convert string dates to NgbDateStruct for the datepicker
         this.workOrderForm.patchValue({
           name: data.name,
@@ -147,7 +148,10 @@ export class SidePanel {
           startDate: this.stringToNgbDate(data.startDate),
           endDate: this.stringToNgbDate(data.endDate)
         });
-        this.localFormError = '';
+        // Only clear local error when panel first opens, not on every change
+        if (isOpen) {
+          this.localFormError.set('');
+        }
       }
     });
   }
@@ -163,12 +167,12 @@ export class SidePanel {
         endDate: this.ngbDateToString(formValue.endDate)
       };
       this.submitForm.emit(submitData);
-      this.localFormError = '';
+      this.localFormError.set('');
     } else {
       if (this.workOrderForm.errors?.['dateRange']) {
-        this.localFormError = 'End date must be on or after start date';
+        this.localFormError.set('End date must be on or after start date');
       } else {
-        this.localFormError = 'Please fill in all required fields';
+        this.localFormError.set('Please fill in all required fields');
       }
     }
   }

@@ -15,7 +15,7 @@
   }
 
   .hover-hint {
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -25,7 +25,12 @@
     opacity: 0;
     transition: opacity 0.2s;
     pointer-events: none;
-    z-index: 1;
+    z-index: 20;
+    background: white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
   }
 
   .grid-lines {
@@ -131,6 +136,86 @@
             &:hover {
               background: #fef2f2;
             }
+          }
+        }
+      }
+    }
+  }
+}
+
+// Mobile responsive styles
+@media (max-width: 768px) {
+  .timeline-row {
+    height: 50px;
+
+    .hover-hint {
+      font-size: 12px;
+    }
+
+    .work-order-bar {
+      top: 8px;
+      height: 34px;
+      padding: 6px 10px;
+      font-size: 12px;
+
+      .status-badge {
+        font-size: 10px;
+        padding: 2px 6px;
+      }
+
+      .work-order-menu {
+        .menu-button {
+          padding: 6px;
+          min-width: 32px;
+          min-height: 32px;
+        }
+
+        .dropdown-menu {
+          min-width: 130px;
+
+          .menu-item {
+            padding: 12px 14px;
+            font-size: 15px;
+            min-height: 44px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .timeline-row {
+    height: 44px;
+
+    .hover-hint {
+      font-size: 11px;
+    }
+
+    .work-order-bar {
+      top: 6px;
+      height: 32px;
+      padding: 4px 8px;
+      font-size: 11px;
+
+      .status-badge {
+        display: none;
+      }
+
+      .work-order-menu {
+        .menu-button {
+          padding: 8px;
+          min-width: 36px;
+          min-height: 36px;
+        }
+
+        .dropdown-menu {
+          min-width: 140px;
+
+          .menu-item {
+            padding: 14px 16px;
+            font-size: 16px;
+            min-height: 48px;
           }
         }
       }
