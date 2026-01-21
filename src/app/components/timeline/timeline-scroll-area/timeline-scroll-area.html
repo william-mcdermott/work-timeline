@@ -1,4 +1,4 @@
-<div #timelineScroll class="timeline-scroll">
+<div #timelineScroll class="timeline-scroll" [class.month-view]="zoomLevel === 'month'">
   <div class="timeline-content" [style.width.px]="dateColumns.length * columnWidth">
     <!-- Date Headers -->
     <div class="date-headers">

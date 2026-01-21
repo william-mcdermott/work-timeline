@@ -2,7 +2,7 @@
   <app-header [zoomLevel]="zoomLevel" (zoomLevelChange)="handleZoomLevelChange($event)" (todayClicked)="scrollToToday()"></app-header>
   <div class="timeline-body" #timelineBody>
     <div class="timeline-wrapper">
-      <app-timeline-grid></app-timeline-grid>
+      <app-timeline-grid [zoomLevel]="zoomLevel"></app-timeline-grid>
       <app-timeline-scroll-area
         [dateColumns]="dateColumns()"
         [columnWidth]="columnWidth()"

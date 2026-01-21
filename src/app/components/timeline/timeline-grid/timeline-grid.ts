@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, input } from '@angular/core';
 import { WorkCenterDocument } from '../../../models/work-order.model';
 import { WorkOrderService } from '../../../services/work-order.service';
 import { CommonModule } from '@angular/common';
@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 })
 export class TimelineGrid implements OnInit {
   workCenters: WorkCenterDocument[] = [];
+  zoomLevel = input<'day' | 'week' | 'month'>('month');
 
   constructor(private workOrderService: WorkOrderService) {}
 
