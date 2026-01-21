@@ -22,8 +22,8 @@ export interface WorkOrderDocument {
 }
 
 export const STATUS_CONFIG = {
-  open: { label: 'Open', color: '#3B82F6' },
-  'in-progress': { label: 'In Progress', color: '#8B5CF6' },
-  complete: { label: 'Complete', color: '#10B981' },
-  blocked: { label: 'Blocked', color: '#F59E0B' },
+  open: { label: 'Open', color: '#e0e7ff' },
+  'in-progress': { label: 'In progress', color: '#ddd6fe' },
+  complete: { label: 'Complete', color: '#d1fae5' },
+  blocked: { label: 'Blocked', color: '#fef3c7' },
 };
