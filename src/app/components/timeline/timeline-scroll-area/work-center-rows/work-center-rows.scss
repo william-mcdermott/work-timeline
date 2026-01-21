@@ -4,6 +4,7 @@
   position: relative;
   cursor: pointer;
   transition: background 0.2s;
+  overflow: visible;
 
   &:hover {
     background: #f3f4f6;

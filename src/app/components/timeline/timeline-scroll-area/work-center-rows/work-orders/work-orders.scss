@@ -11,6 +11,7 @@
   transition: all 0.2s;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   z-index: 10;
+  overflow: visible;
 
   &:hover {
     transform: translateY(-1px);
@@ -75,14 +76,17 @@
       right: 0;
       margin-top: 4px;
       background: white;
+      border: 1px solid #d1d5db;
       border-radius: 6px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      overflow: hidden;
-      z-index: 100;
-      min-width: 120px;
+      z-index: 9999;
+      min-width: 140px;
+      padding: 4px 0;
 
       .menu-item {
-        display: block;
+        display: flex;
+        align-items: center;
+        gap: 8px;
         width: 100%;
         padding: 10px 16px;
         border: none;
@@ -99,6 +103,16 @@
 
         &.delete {
           color: #ef4444;
+
+          &:hover {
+            background: #fef2f2;
+          }
+        }
+
+        svg {
+          width: 16px;
+          height: 16px;
+          flex-shrink: 0;
         }
       }
     }

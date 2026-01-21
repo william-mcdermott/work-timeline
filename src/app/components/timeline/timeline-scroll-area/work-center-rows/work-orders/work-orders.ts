@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input, output, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import {
   STATUS_CONFIG,
   WorkCenterDocument,
@@ -32,10 +33,12 @@ export class WorkOrders {
   // Local state
   openMenuId = signal<string | null>(null);
 
+  // Convert observable to signal for reactivity
+  private allWorkOrders = toSignal(this.workOrderService.workOrders$, { initialValue: [] });
+
   // Computed values
   workOrders = computed(() =>
-    this.workOrderService
-      .getWorkOrders()
+    this.allWorkOrders()
       .filter(wo => wo.data.workCenterId === this.workCenter().docId)
   );
 

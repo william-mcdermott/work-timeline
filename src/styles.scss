@@ -25,7 +25,7 @@ ngb-datepicker {
   z-index: 1050;
   position: relative;
 
-  .visually-hidden {
+  div[aria-live="polite"].visually-hidden {
     display: none !important;
   }
 
