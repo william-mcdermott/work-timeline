@@ -252,4 +252,21 @@ export class Timeline implements OnInit, AfterViewInit, OnDestroy {
     this.panelInitialData = null;
     this.formError.set('');
   }
+
+  scrollToToday(): void {
+    // Today is January 21, 2026
+    const today = '2026-01-21';
+    const position = this.getPositionForDate(today);
+
+    // Scroll to center today's date in the viewport
+    const timelineBody = document.querySelector('.timeline-body');
+    if (timelineBody) {
+      const viewportWidth = timelineBody.clientWidth;
+      const scrollPosition = position - (viewportWidth / 2) + (this.columnWidth() / 2);
+      timelineBody.scrollTo({
+        left: Math.max(0, scrollPosition),
+        behavior: 'smooth'
+      });
+    }
+  }
 }

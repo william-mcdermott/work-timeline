@@ -1,6 +1,7 @@
 <div class="header">
   <h1>Work Orders</h1>
   <div class="controls">
+    <button class="today-button" (click)="onTodayClick()">Today</button>
     <span class="label">Timescale:</span>
     <ng-select
       [items]="zoomOptions"

@@ -1,5 +1,5 @@
 <div class="timeline-container">
-  <app-header [zoomLevel]="zoomLevel" (zoomLevelChange)="handleZoomLevelChange($event)"></app-header>
+  <app-header [zoomLevel]="zoomLevel" (zoomLevelChange)="handleZoomLevelChange($event)" (todayClicked)="scrollToToday()"></app-header>
   <div class="timeline-body" #timelineBody>
     <div class="timeline-wrapper">
       <app-timeline-grid></app-timeline-grid>

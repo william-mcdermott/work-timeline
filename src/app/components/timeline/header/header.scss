@@ -17,6 +17,26 @@
     gap: 8px;
     margin-top: 12px;
 
+    .today-button {
+      padding: 8px 16px;
+      background: #6366f1;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s;
+
+      &:hover {
+        background: #4f46e5;
+      }
+
+      &:active {
+        background: #4338ca;
+      }
+    }
+
     .label {
       font-size: 13px;
       color: #9ca3af;

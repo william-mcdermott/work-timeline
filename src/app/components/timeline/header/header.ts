@@ -18,6 +18,7 @@ interface ZoomOption {
 export class Header {
   zoomLevel = input.required<ZoomLevel>();
   readonly zoomLevelChange = output<ZoomLevel>();
+  readonly todayClicked = output<void>();
 
   selectedZoom = signal<ZoomLevel>('month');
 
@@ -35,5 +36,9 @@ export class Header {
 
   onZoomChange(newZoomLevel: ZoomLevel): void {
     this.zoomLevelChange.emit(newZoomLevel);
+  }
+
+  onTodayClick(): void {
+    this.todayClicked.emit();
   }
 }
