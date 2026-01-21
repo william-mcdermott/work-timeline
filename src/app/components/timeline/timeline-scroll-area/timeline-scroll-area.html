@@ -1,5 +1,5 @@
 <div #timelineScroll class="timeline-scroll">
-  <div class="timeline-content" [style.min-width.px]="dateColumns.length * columnWidth">
+  <div class="timeline-content" [style.width.px]="dateColumns.length * columnWidth">
     <!-- Date Headers -->
     <div class="date-headers">
       <div
@@ -10,6 +10,9 @@
         {{ col.label }}
       </div>
     </div>
+    <div class="grid-lines-container" [style.width.px]="dateColumns.length * columnWidth">
+      <div class="grid-line" *ngFor="let col of dateColumns" [style.width.px]="columnWidth"></div>
+    </div>
     <app-work-center-rows
       [getPositionForDate]="getPositionForDate"
       [columnWidth]="columnWidth"
@@ -19,7 +22,6 @@
       (editRequested)="handleEdit($event)"
       (deleteRequested)="handleDelete($event)"
     ></app-work-center-rows>
-    <app-grid-lines [columnWidth]="columnWidth" [dateColumns]="dateColumns"></app-grid-lines>
     <app-today-indicator [getPositionForDate]="getPositionForDate"></app-today-indicator>
   </div>
 </div>

@@ -3,10 +3,26 @@
   overflow-x: auto;
   overflow-y: hidden;
   background: #fafafa;
+  min-width: 0;
 }
 
 .timeline-content {
   position: relative;
+}
+
+.grid-lines-container {
+  position: absolute;
+  top: 48px;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  pointer-events: none;
+  z-index: 2;
+
+  .grid-line {
+    border-right: 1px solid #e5e7eb;
+    flex-shrink: 0;
+  }
 }
 
 .date-headers {
@@ -18,7 +34,6 @@
   top: 0;
   z-index: 10;
   flex-wrap: nowrap;
-  overflow: visible;
 
   .date-header {
     border-right: 1px solid #e5e7eb;

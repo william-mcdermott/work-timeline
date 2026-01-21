@@ -10,5 +10,6 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 export class TodayIndicator {
   getPositionForDate = input.required<(date: string) => number>();
 
+  // Get today's actual date
   today = new Date().toISOString().split('T')[0];
 }

@@ -48,33 +48,35 @@ export class Timeline implements OnInit {
 
     if (this.zoomLevel === 'day') {
       this.columnWidth.set(80);
-      // Fixed range: Jan 1 - Mar 31, 2025
-      const start = new Date(2025, 0, 1);
-      const end = new Date(2025, 2, 31);
+      // Fixed range: Jan 1 - Mar 31, 2026 (90 days)
+      const start = new Date(2026, 0, 1);
 
-      for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+      for (let i = 0; i < 90; i++) {
+        const d = new Date(start);
+        d.setDate(d.getDate() + i);
         newColumns.push({
           label: d.toLocaleDateString('en-US', { day: 'numeric', month: 'short' }),
-          date: new Date(d).toISOString().split('T')[0],
+          date: d.toISOString().split('T')[0],
         });
       }
     } else if (this.zoomLevel === 'week') {
       this.columnWidth.set(120);
-      // Fixed range: Jan 1 - Mar 31, 2025 in weeks
-      const start = new Date(2025, 0, 1);
-      const end = new Date(2025, 2, 31);
+      // Fixed range: Jan 1 - Mar 31, 2026 in weeks (13 weeks)
+      const start = new Date(2026, 0, 1);
 
-      for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 7)) {
+      for (let i = 0; i < 13; i++) {
+        const d = new Date(start);
+        d.setDate(d.getDate() + (i * 7));
         newColumns.push({
           label: `Week of ${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`,
-          date: new Date(d).toISOString().split('T')[0],
+          date: d.toISOString().split('T')[0],
         });
       }
     } else {
       this.columnWidth.set(180);
-      // Fixed range: 3 months (Jan, Feb, Mar 2025)
+      // Fixed range: 3 months (Jan, Feb, Mar 2026)
       for (let m = 0; m < 3; m++) {
-        const monthDate = new Date(2025, m, 1);
+        const monthDate = new Date(2026, m, 1);
         newColumns.push({
           label: monthDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
           date: new Date(monthDate).toISOString().split('T')[0],

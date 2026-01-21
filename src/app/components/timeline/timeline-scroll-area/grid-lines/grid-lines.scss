@@ -1,12 +1,16 @@
 .grid-lines {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  height: 100%;
   display: flex;
+  flex-wrap: nowrap;
   pointer-events: none;
   z-index: 1;
 
   .grid-line {
     border-right: 1px solid #e5e7eb;
     flex-shrink: 0;
+    height: 100%;
   }
 }
