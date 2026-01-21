@@ -118,6 +118,15 @@ export class Timeline implements OnInit {
       return 0;
     }
 
+    if (this.zoomLevel === 'month') {
+      // Parse dates as YYYY-MM-DD to avoid timezone issues
+      const [targetYear, targetMonth] = date.split('-').map(Number);
+      const [startYear, startMonth] = columns[0].date.split('-').map(Number);
+
+      const monthsDiff = (targetYear - startYear) * 12 + (targetMonth - startMonth);
+      return monthsDiff * this.columnWidth();
+    }
+
     const targetDate = new Date(date);
     const startDate = new Date(columns[0].date);
     const daysDiff = Math.floor(
@@ -126,13 +135,8 @@ export class Timeline implements OnInit {
 
     if (this.zoomLevel === 'day') {
       return daysDiff * this.columnWidth();
-    } else if (this.zoomLevel === 'week') {
-      return Math.floor(daysDiff / 7) * this.columnWidth();
     } else {
-      const monthsDiff =
-        (targetDate.getFullYear() - startDate.getFullYear()) * 12 +
-        (targetDate.getMonth() - startDate.getMonth());
-      return monthsDiff * this.columnWidth();
+      return Math.floor(daysDiff / 7) * this.columnWidth();
     }
   }
 

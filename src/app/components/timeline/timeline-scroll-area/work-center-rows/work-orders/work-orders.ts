@@ -43,18 +43,23 @@ export class WorkOrders {
   );
 
   getWidthForDateRange(startDate: string, endDate: string): number {
+    if (this.zoomLevel() === 'month') {
+      // Parse dates as YYYY-MM-DD to avoid timezone issues
+      const [startYear, startMonth] = startDate.split('-').map(Number);
+      const [endYear, endMonth] = endDate.split('-').map(Number);
+
+      const monthsDiff = (endYear - startYear) * 12 + (endMonth - startMonth) + 1;
+      return monthsDiff * this.columnWidth();
+    }
+
     const start = new Date(startDate);
     const end = new Date(endDate);
     const daysDiff = Math.floor((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
 
     if (this.zoomLevel() === 'day') {
       return daysDiff * this.columnWidth();
-    } else if (this.zoomLevel() === 'week') {
-      return Math.ceil(daysDiff / 7) * this.columnWidth();
     } else {
-      const monthsDiff =
-        (end.getFullYear() - start.getFullYear()) * 12 + (end.getMonth() - start.getMonth()) + 1;
-      return monthsDiff * this.columnWidth();
+      return Math.ceil(daysDiff / 7) * this.columnWidth();
     }
   }
 
