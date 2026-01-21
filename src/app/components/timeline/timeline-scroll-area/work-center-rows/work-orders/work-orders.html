@@ -5,7 +5,7 @@
     [style.left.px]="getPositionForDate()(wo.data.startDate)"
     [style.width.px]="getWidthForDateRange(wo.data.startDate, wo.data.endDate)"
     [style.background-color]="statusConfig[wo.data.status].color"
-    [style.z-index]="openMenuId() === wo.docId ? 10000 : 10"
+    [style.z-index]="openMenuId() === wo.docId ? 10000 : 1"
     (click)="$event.stopPropagation()"
     (keyup)="$event.stopPropagation()"
   >

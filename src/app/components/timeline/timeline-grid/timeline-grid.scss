@@ -1,7 +1,10 @@
 .timeline-grid {
   display: flex;
   flex-direction: column;
-  flex-shrink: 0;
+  position: relative;
+  z-index: 10;
+  will-change: transform;
+  pointer-events: auto;
 }
 
 .work-centers-column {
@@ -9,6 +12,7 @@
   background: white;
   border-right: 1px solid #e5e7eb;
   flex-shrink: 0;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.05);
 
   .header-cell {
     height: 48px;
@@ -19,6 +23,7 @@
     font-weight: 600;
     font-size: 13px;
     color: #6b7280;
+    background: white;
   }
 
   .work-center-cell {
@@ -29,5 +34,43 @@
     padding: 0 16px;
     font-size: 14px;
     color: #111827;
+    background: white;
+  }
+}
+
+// Mobile responsive styles
+@media (max-width: 768px) {
+  .work-centers-column {
+    width: 160px;
+
+    .header-cell {
+      height: 40px;
+      padding: 0 12px;
+      font-size: 11px;
+    }
+
+    .work-center-cell {
+      height: 50px;
+      padding: 0 12px;
+      font-size: 12px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .work-centers-column {
+    width: 120px;
+
+    .header-cell {
+      height: 36px;
+      padding: 0 8px;
+      font-size: 10px;
+    }
+
+    .work-center-cell {
+      height: 50px;
+      padding: 0 8px;
+      font-size: 11px;
+    }
   }
 }

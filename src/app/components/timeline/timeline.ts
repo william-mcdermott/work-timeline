@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, ElementRef, inject, OnInit, signal, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
 import { Header } from './header/header';
 import { TimelineGrid } from './timeline-grid/timeline-grid';
 import { WorkOrderDocument, WorkOrderStatus, ZoomLevel } from '../../models/work-order.model';
@@ -25,8 +25,11 @@ interface WorkOrderFormData {
   templateUrl: './timeline.html',
   styleUrl: './timeline.scss',
 })
-export class Timeline implements OnInit {
+export class Timeline implements OnInit, AfterViewInit, OnDestroy {
   private workOrderService = inject(WorkOrderService);
+
+  @ViewChild('timelineBody') timelineBodyRef!: ElementRef<HTMLDivElement>;
+  @ViewChild(TimelineGrid) timelineGridRef!: TimelineGrid;
 
   zoomLevel: ZoomLevel = 'month';
   dateColumns = signal<DateColumn[]>([]);
@@ -41,6 +44,33 @@ export class Timeline implements OnInit {
 
   ngOnInit() {
     this.generateDateColumns();
+  }
+
+  ngAfterViewInit() {
+    // Set up scroll listener
+    const timelineBody = document.querySelector('.timeline-body');
+    if (timelineBody) {
+      timelineBody.addEventListener('scroll', this.handleScroll.bind(this));
+    }
+  }
+
+  ngOnDestroy() {
+    // Clean up scroll listener
+    const timelineBody = document.querySelector('.timeline-body');
+    if (timelineBody) {
+      timelineBody.removeEventListener('scroll', this.handleScroll.bind(this));
+    }
+  }
+
+  handleScroll(event: Event) {
+    const scrollContainer = event.target as HTMLElement;
+    const scrollLeft = scrollContainer.scrollLeft;
+
+    // Update the grid's transform to follow the scroll
+    const grid = document.querySelector('.timeline-grid') as HTMLElement;
+    if (grid) {
+      grid.style.transform = `translateX(${scrollLeft}px)`;
+    }
   }
 
   generateDateColumns(): void {

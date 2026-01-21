@@ -11,6 +11,18 @@
   flex: 1;
   display: flex;
   min-height: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: relative;
+  -webkit-overflow-scrolling: touch;
+}
+
+.timeline-wrapper {
+  display: grid;
+  grid-template-columns: auto minmax(0, max-content);
+  position: relative;
+  width: fit-content;
+  min-width: 100%;
 }
 
 // Mobile responsive styles
