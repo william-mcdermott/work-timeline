@@ -37,11 +37,18 @@ export class SidePanel {
   // Computed combined error message
   displayError = computed(() => this.formError() || this.localFormError);
 
+  // Get current status color
+  getCurrentStatusColor(): string {
+    const currentStatus = this.workOrderForm.get('status')?.value;
+    const statusOption = this.statusOptions.find(opt => opt.value === currentStatus);
+    return statusOption?.color || '#e0e7ff';
+  }
+
   statusOptions = [
-    { value: 'open', label: 'Open' },
-    { value: 'in-progress', label: 'In Progress' },
-    { value: 'complete', label: 'Complete' },
-    { value: 'blocked', label: 'Blocked' },
+    { value: 'open', label: 'Open', color: '#e0e7ff' },
+    { value: 'in-progress', label: 'In Progress', color: '#ddd6fe' },
+    { value: 'complete', label: 'Complete', color: '#d1fae5' },
+    { value: 'blocked', label: 'Blocked', color: '#fef3c7' },
   ];
 
   // Custom validator to ensure end date is after start date
