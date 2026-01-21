@@ -1,6 +1,7 @@
 @for (wc of workCenters; track wc.docId) {
   <div
     class="timeline-row"
+    [style.width.px]="dateColumns.length * columnWidth"
     tabindex="0"
     role="button"
     (click)="onTimelineClick(wc.docId, $event)"
@@ -10,9 +11,9 @@
     <div class="hover-hint">Click to add dates</div>
     <app-work-orders
       [workCenter]="wc"
-      [getPositionForDate]="getPositionForDate()"
-      [zoomLevel]="zoomLevel()"
-      [columnWidth]="columnWidth()"
+      [getPositionForDate]="getPositionForDate"
+      [zoomLevel]="zoomLevel"
+      [columnWidth]="columnWidth"
       (editRequested)="handleEdit($event)"
       (deleteRequested)="handleDelete($event)"
     ></app-work-orders>

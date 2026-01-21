@@ -6,7 +6,7 @@
 }
 
 .timeline-content {
-  min-width: 100%;
+  position: relative;
 }
 
 .date-headers {
@@ -17,6 +17,8 @@
   position: sticky;
   top: 0;
   z-index: 10;
+  flex-wrap: nowrap;
+  overflow: visible;
 
   .date-header {
     border-right: 1px solid #e5e7eb;
@@ -26,5 +28,7 @@
     font-size: 12px;
     font-weight: 500;
     color: #6b7280;
+    flex-shrink: 0;
+    min-width: 80px;
   }
 }

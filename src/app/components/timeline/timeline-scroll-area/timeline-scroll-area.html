@@ -1,26 +1,25 @@
 <div #timelineScroll class="timeline-scroll">
-  <div class="timeline-content" [style.min-width.px]="dateColumns().length * columnWidth()">
+  <div class="timeline-content" [style.min-width.px]="dateColumns.length * columnWidth">
     <!-- Date Headers -->
     <div class="date-headers">
-      @for (col of dateColumns(); track col.date) {
-        <div
-          class="date-header"
-          [style.width.px]="columnWidth()"
-        >
-          {{ col.label }}
-        </div>
-      }
+      <div
+        *ngFor="let col of dateColumns"
+        class="date-header"
+        [style.width.px]="columnWidth"
+      >
+        {{ col.label }}
+      </div>
     </div>
     <app-work-center-rows
-      [getPositionForDate]="getPositionForDate()"
-      [columnWidth]="columnWidth()"
-      [dateColumns]="dateColumns()"
-      [zoomLevel]="zoomLevel()"
+      [getPositionForDate]="getPositionForDate"
+      [columnWidth]="columnWidth"
+      [dateColumns]="dateColumns"
+      [zoomLevel]="zoomLevel"
       (createFormRequested)="handleCreateFormRequest($event)"
       (editRequested)="handleEdit($event)"
       (deleteRequested)="handleDelete($event)"
     ></app-work-center-rows>
-    <app-grid-lines [columnWidth]="columnWidth()" [dateColumns]="dateColumns()"></app-grid-lines>
-    <app-today-indicator [getPositionForDate]="getPositionForDate()"></app-today-indicator>
+    <app-grid-lines [columnWidth]="columnWidth" [dateColumns]="dateColumns"></app-grid-lines>
+    <app-today-indicator [getPositionForDate]="getPositionForDate"></app-today-indicator>
   </div>
 </div>

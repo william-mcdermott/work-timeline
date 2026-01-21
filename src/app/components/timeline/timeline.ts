@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { Header } from './header/header';
 import { TimelineGrid } from './timeline-grid/timeline-grid';
 import { WorkOrderDocument, WorkOrderStatus, ZoomLevel } from '../../models/work-order.model';
@@ -29,8 +29,8 @@ export class Timeline implements OnInit {
   private workOrderService = inject(WorkOrderService);
 
   zoomLevel: ZoomLevel = 'month';
-  dateColumns: DateColumn[] = [];
-  columnWidth = 80;
+  dateColumns = signal<DateColumn[]>([]);
+  columnWidth = signal(80);
   selectedWorkCenter = '';
   panelMode: 'create' | 'edit' = 'create';
   isPanelOpen = false;
@@ -44,50 +44,46 @@ export class Timeline implements OnInit {
   }
 
   generateDateColumns(): void {
-    const today = new Date();
-    this.dateColumns = [];
+    const newColumns: DateColumn[] = [];
 
     if (this.zoomLevel === 'day') {
-      this.columnWidth = 80;
-      // Show 45 days before and 45 days after today (90 days total)
-      const start = new Date(today);
-      start.setDate(start.getDate() - 45);
-      const end = new Date(today);
-      end.setDate(end.getDate() + 45);
+      this.columnWidth.set(80);
+      // Fixed range: Jan 1 - Mar 31, 2025
+      const start = new Date(2025, 0, 1);
+      const end = new Date(2025, 2, 31);
 
       for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-        this.dateColumns.push({
+        newColumns.push({
           label: d.toLocaleDateString('en-US', { day: 'numeric', month: 'short' }),
           date: new Date(d).toISOString().split('T')[0],
         });
       }
     } else if (this.zoomLevel === 'week') {
-      this.columnWidth = 120;
-      // Show 12 weeks before and 12 weeks after today (24 weeks total)
-      const start = new Date(today);
-      start.setDate(start.getDate() - (12 * 7));
-      const end = new Date(today);
-      end.setDate(end.getDate() + (12 * 7));
+      this.columnWidth.set(120);
+      // Fixed range: Jan 1 - Mar 31, 2025 in weeks
+      const start = new Date(2025, 0, 1);
+      const end = new Date(2025, 2, 31);
 
       for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 7)) {
-        this.dateColumns.push({
+        newColumns.push({
           label: `Week of ${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`,
           date: new Date(d).toISOString().split('T')[0],
         });
       }
     } else {
-      this.columnWidth = 180;
-      // Show 6 months before and 6 months after today (12 months total)
-      const start = new Date(today.getFullYear(), today.getMonth() - 6, 1);
-
-      for (let m = 0; m < 12; m++) {
-        const monthDate = new Date(start.getFullYear(), start.getMonth() + m, 1);
-        this.dateColumns.push({
+      this.columnWidth.set(180);
+      // Fixed range: 3 months (Jan, Feb, Mar 2025)
+      for (let m = 0; m < 3; m++) {
+        const monthDate = new Date(2025, m, 1);
+        newColumns.push({
           label: monthDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
           date: new Date(monthDate).toISOString().split('T')[0],
         });
       }
     }
+
+    // Use .set() to update the signal
+    this.dateColumns.set(newColumns);
   }
 
   onZoomChange(): void {
@@ -115,25 +111,26 @@ export class Timeline implements OnInit {
   }
 
   getPositionForDate(date: string): number {
-    if (!this.dateColumns || this.dateColumns.length === 0) {
+    const columns = this.dateColumns();
+    if (!columns || columns.length === 0) {
       return 0;
     }
 
     const targetDate = new Date(date);
-    const startDate = new Date(this.dateColumns[0].date);
+    const startDate = new Date(columns[0].date);
     const daysDiff = Math.floor(
       (targetDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24),
     );
 
     if (this.zoomLevel === 'day') {
-      return daysDiff * this.columnWidth;
+      return daysDiff * this.columnWidth();
     } else if (this.zoomLevel === 'week') {
-      return Math.floor(daysDiff / 7) * this.columnWidth;
+      return Math.floor(daysDiff / 7) * this.columnWidth();
     } else {
       const monthsDiff =
         (targetDate.getFullYear() - startDate.getFullYear()) * 12 +
         (targetDate.getMonth() - startDate.getMonth());
-      return monthsDiff * this.columnWidth;
+      return monthsDiff * this.columnWidth();
     }
   }
 

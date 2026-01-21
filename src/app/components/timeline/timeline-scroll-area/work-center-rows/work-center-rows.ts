@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ElementRef, inject, input, OnInit, output, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, Input, OnInit, output } from '@angular/core';
 import { WorkCenterDocument, WorkOrderDocument, ZoomLevel } from '../../../../models/work-order.model';
 import { WorkOrderService } from '../../../../services/work-order.service';
 import { DateColumn } from '../../timeline';
@@ -10,23 +10,21 @@ import { WorkOrders } from './work-orders/work-orders';
   imports: [CommonModule, WorkOrders],
   templateUrl: './work-center-rows.html',
   styleUrl: './work-center-rows.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class WorkCenterRows implements OnInit {
   private workOrderService = inject(WorkOrderService);
+  private elementRef = inject(ElementRef);
 
-  // Inputs using signal-based API
-  dateColumns = input.required<DateColumn[]>();
-  columnWidth = input.required<number>();
-  getPositionForDate = input.required<(date: string) => number>();
-  zoomLevel = input.required<ZoomLevel>();
+  // Use @Input() instead of signal inputs
+  @Input({ required: true }) dateColumns!: DateColumn[];
+  @Input({ required: true }) columnWidth!: number;
+  @Input({ required: true }) getPositionForDate!: (date: string) => number;
+  @Input({ required: true }) zoomLevel!: ZoomLevel;
 
   // Outputs for events
   readonly createFormRequested = output<{ workCenterId: string; clickedDate: Date; endDate: Date }>();
   readonly editRequested = output<WorkOrderDocument>();
   readonly deleteRequested = output<string>();
-
-  @ViewChild('timelineScroll') timelineScroll!: ElementRef<HTMLDivElement>;
 
   workCenters: WorkCenterDocument[] = [];
 
@@ -42,16 +40,19 @@ export class WorkCenterRows implements OnInit {
 
     let clickX: number;
     if (event instanceof MouseEvent) {
-      clickX = event.clientX - rect.left + (this.timelineScroll?.nativeElement.scrollLeft || 0);
+      // Find the scroll container by traversing up the DOM
+      const scrollContainer = this.elementRef.nativeElement.closest('.timeline-scroll') as HTMLElement;
+      const scrollLeft = scrollContainer?.scrollLeft || 0;
+      clickX = event.clientX - rect.left + scrollLeft;
     } else {
       // For keyboard events, use the center of the first column
-      clickX = this.columnWidth() / 2;
+      clickX = this.columnWidth / 2;
     }
 
-    const columnIndex = Math.floor(clickX / this.columnWidth());
+    const columnIndex = Math.floor(clickX / this.columnWidth);
 
-    if (columnIndex >= 0 && columnIndex < this.dateColumns().length) {
-      const clickedDate = new Date(this.dateColumns()[columnIndex].date);
+    if (columnIndex >= 0 && columnIndex < this.dateColumns.length) {
+      const clickedDate = new Date(this.dateColumns[columnIndex].date);
       const endDate = new Date(clickedDate);
       endDate.setDate(endDate.getDate() + 7);
       this.createFormRequested.emit({ workCenterId, clickedDate, endDate });
